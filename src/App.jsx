@@ -14,7 +14,7 @@ const App = () => {
     },
     {
       content:
-        "High above the city skyline, the moon casts its gentle glow upon the bustling streets below. Stars twinkle in the velvet sky, like diamonds scattered across a vast canvas. The night air is crisp and cool, carrying with it the scent of distant flowers and freshly fallen rain. Somewhere in the distance, a lone saxophone fills the air with soulful melodies, its haunting notes weaving tales of love and longing. In the quiet corners of the city, shadows dance playfully, casting ephemeral shapes upon the walls. It is a time of magic and mystery, where anything seems possible.",
+        "High above the city skyline, the moon casts its gentle glow upon the bustling streets below. Stars twinkle in the velvet sky, like diamonds scattered across a vast canvas. The night air is crisp and cool, carrying with it the scent of distant flowers and freshly fallen rain.",
     },
     {
       content:
@@ -34,29 +34,36 @@ const App = () => {
   const [random, setRandom] = useState(null);
   const { textBoxDetail } = useRef(null);
   const [curPos, setCurPos] = useState({});
+  const [validIndex, setValidIndex] = useState(0);
 
   function handleInput(e, textLength) {
+    console.log(textDetail.current[validIndex].textContent);
     if (
       e.target.value[textLength - 1] ===
-      textDetail.current[textLength - 1].textContent
+      textDetail.current[validIndex].textContent
     ) {
-      textDetail.current[textLength - 1].classList.add("text-green-600");
-
-      setCurPos((previous) => ({
-        ...previous,
+      console.log(validIndex)
+      validIndex < textDetail.current.length && setValidIndex(previous => previous+1)
+      textDetail.current[validIndex].classList.add("text-[#2cd640]");
+      textDetail.current[validIndex].classList.remove("bg-[#faaaaa]");
+      
+      gsap.to(".cursor",{
         top:
-          textLength !== textDetail.current.length
-            ? textDetail.current[textLength].offsetTop
-            : textDetail.current[textLength - 1].offsetTop,
+          validIndex !== textDetail.current.length-1
+            ? textDetail.current[validIndex+1].offsetTop
+            : textDetail.current[validIndex].offsetTop,
         left:
-          textLength !== textDetail.current.length
-            ? textDetail.current[textLength].offsetLeft
-            : textDetail.current[textLength - 1].offsetLeft +
-              textDetail.current[textLength - 1].offsetWidth,
-        width: textDetail.current[textLength - 1].offsetWidth,
-      }));
+          validIndex !== textDetail.current.length-1
+            ? textDetail.current[validIndex+1].offsetLeft
+            : textDetail.current[validIndex].offsetLeft +
+              textDetail.current[validIndex].offsetWidth,
+        duration: 0.2,
+      });
     } else {
-      textDetail.current[textLength - 1].classList.add("text-red-600");
+      console.log(validIndex)
+      textDetail.current[validIndex].classList.add("bg-[#faaaaa]");
+      textDetail.current[validIndex].classList.add("text-black");
+      textDetail.current[validIndex].classList.add("rounded-full");
     }
   }
 
@@ -64,16 +71,13 @@ const App = () => {
     gsap.fromTo(
       ".animeTextBox",
       {
-        scrollTo:
-          e.target.value.length <= textDetail.current.length
-            ? textDetail.current[e.target.value.length - 1].offsetTop
-            : textDetail.current[textDetail.current.length - 2].offsetTop,
+        scrollTo: textDetail.current[validIndex].offsetTop
       },
       {
         scrollTo:
-          e.target.value.length < textDetail.current.length
-            ? textDetail.current[e.target.value.length].offsetTop
-            : textDetail.current[textDetail.current.length - 1].offsetTop,
+          validIndex < textDetail.current.length-1
+            ? textDetail.current[validIndex+1].offsetTop
+            : textDetail.current[validIndex].offsetTop,
       }
     );
   }
@@ -89,17 +93,13 @@ const App = () => {
   }, [textDetail.current, textBoxDetail, random]); // This will run after the initial render when textDetail.current is updated
 
   return (
-    <div className="bg-zinc-100 h-screen p-5">
-      <div className="bg-white p-4 flex justify-center items-center">
+    <div className="bg-zinc-100 h-screen flex justify-center items-center p-5">
+      <div className="bg-white w-full py-7 px-4 flex justify-center items-center rounded-md">
         <div
           ref={textBoxDetail}
           className="animeTextBox relative overflow-hidden h-[50vh] w-full bg-white"
         >
           <div
-            style={{
-              top: `calc(${curPos.top}px + 0.2vh)`,
-              left: `calc(${curPos.left}px - 0.1vw)`,
-            }} // Dynamically setting the left position
             onClick={() => console.log(textDetail.current[0].offsetWidth)}
             className={`absolute cursor h-[7.5vh] w-[0.15rem] bg-black`}
           ></div>
@@ -125,17 +125,15 @@ const App = () => {
             className="opacity-[0] absolute top-0 left-0"
             onChange={(e) => {
               e.preventDefault();
-              e.target.value.length <= textDetail.current.length
-                ? handleInput(e, e.target.value.length)
-                : handleInput(e, textDetail.current.length);
+              validIndex<textDetail.current.length && handleInput(e, e.target.value.length)
+              validIndex<textDetail.current.length && handleScroll(e)
             }}
-            onInput={(e) => handleScroll(e)}
             autoFocus={true}
             type="text"
             name="userInput"
             id="userInput"
             autoCapitalize="false"
-            autoComplete="false"
+            autoComplete="off"
             autoCorrect="false"
           />
         </div>
