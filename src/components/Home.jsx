@@ -219,7 +219,7 @@ const Home = ({ sendData }) => {
   return (
     <div className="">
       <div className="w-full flex items-center justify-center flex-col gap-3">
-        <h1 className="font-bold text-5xl text-[#0a335c]">Typr</h1>
+        <h1 className="font-bold text-5xl text-[#0a335c]">Tyzer</h1>
         <h3 className="text-xl text-[#0a335cac]">
           Give yourself{" "}
           <span className="text-[#0a335ce4] font-medium underline underline-offset-4">
