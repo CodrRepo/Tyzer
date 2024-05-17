@@ -200,8 +200,8 @@ const Home = ({ sendData }) => {
     };
   }, [count, textDetail.current, inputValue, isTyping, random]);
   return (
-    <div>
-      <div className="w-full flex flex-col gap-3 items-center">
+    <div className="">
+      <div className="w-full flex items-center justify-center flex-col gap-3">
         <h1 className="font-bold text-5xl text-[#0a335c]">Typr</h1>
         <h3 className="text-xl text-[#0a335cac]">
           Give yourself{" "}
@@ -214,23 +214,23 @@ const Home = ({ sendData }) => {
           </span>
         </h3>
       </div>
-      <div className="relative bg-white w-full mt-7 py-7 px-4 flex flex-col justify-center items-center rounded-md">
-        <div className="absolute top-0 left-0 h-[50vh] my-7 px-4 w-full">
+      <div className="relative max-w-[1000px] bg-white w-full mt-7 py-7 px-4 flex flex-col justify-center items-center rounded-md">
+        <div className="absolute top-0 left-0 h-[50vh] my-7 px-4 w-full ">
           
-          <div className={`h-full ${showInfo ? 'flex': 'hidden'} absolute z-[3000] justify-center items-center gap-[7vw] infographics top-0 left-0 bg-white w-full`}>
+          <div className={`h-full ${showInfo ? 'flex': 'hidden'} flex-col md:flex-row absolute z-[3000] justify-center items-center gap-[2vh] md:gap-[7vw] infographics top-0 left-0 bg-white w-full`}>
             <div className="">
-              <h2 className="text-center leading-none h-[18.5vw] w-[18.5vw] flex flex-col items-center justify-center border-[1vw] rounded-full border-[#138376]">
-                <span className="text-[#2a9d8f] font-medium text-[5vw]">
+              <h2 className="text-center leading-none h-[25.5vw] w-[25.5vw] md:h-[18.5vw] md:w-[18.5vw] lg:h-[13.5rem] lg:w-[13.5rem] flex flex-col items-center justify-center border-[0.35rem] md:border-[0.5rem] rounded-full border-[#138376]">
+                <span className="text-[#2a9d8f] font-medium text-[7vw] md:text-[5vw] lg:text-[3.6rem]">
                   {typingSpeed}
                 </span>{" "}
-                <span className="font-bold text-[#10423c] text-[2vw]">WPM</span>
+                <span className="font-bold text-[#10423c] text-[2.5vw] md:text-[2vw] lg:text-[1.8rem]">WPM</span>
               </h2>
             </div>
-            <h2 className="text-center leading-none h-[18.5vw] w-[18.5vw] flex flex-col items-center justify-center border-[1vw] rounded-full border-[#178b7e]">
-              <span className="text-[#2a9d8f] font-medium text-[5vw]">
+            <h2 className="text-center leading-none h-[25.5vw] w-[25.5vw] md:h-[18.5vw] md:w-[18.5vw] lg:h-[13.5rem] lg:w-[13.5rem] flex flex-col items-center justify-center border-[0.35rem] md:border-[0.5rem] rounded-full border-[#178b7e]">
+              <span className="text-[#2a9d8f] text-[7vw] font-medium md:text-[5vw] lg:text-[3.6rem]">
                 {typingAccuracy !== null ? typingAccuracy : 0}%
               </span>{" "}
-              <span className="font-bold text-[#10423c] text-[2vw]">
+              <span className="font-bold text-[#10423c] text-[2.5vw] md:text-[2vw] lg:text-[1.8rem]">
                 Accuracy
               </span>
             </h2>
@@ -243,12 +243,12 @@ const Home = ({ sendData }) => {
           >
             <button
               onClick={handleInputFocus}
-              className="flex gap-2 border-[0.2vw] rounded-lg px-3 py-2 border-[#1d6d64]"
+              className="flex items-center justify-center gap-2 border-[1px] rounded-lg px-3 py-2 border-[#1d6d64]"
             >
-              <span className="bg-[#2a9d8f] rounded-full h-[1.7rem] w-[1.7rem] flex justify-center items-center">
-                <i className="ri-history-line text-white"></i>
+              <span className="bg-[#2a9d8f] rounded-full h-[6vw] w-[6vw] p-5 md:p-4 md:h-[0.5vw] md:w-[0.5vw] flex justify-center items-center">
+                <i className="ri-history-line text-white text-2xl md:text-xl"></i>
               </span>
-              <p className="text-[#0a335cac] font-semibold">Start</p>
+              <p className="text-[#0a335cac] font-semibold text-xl md:text-lg">Start</p>
             </button>
           </div>
         </div>
@@ -261,18 +261,17 @@ const Home = ({ sendData }) => {
           <div
             style={{
               top: `${
-                textDetail.current !== undefined||null &&
-                textDetail.current[0].offsetTop
+                textDetail.current.length>0 && textDetail.current[0].offsetTop
               }px`,
             }}
             className={`${
               isFocus ? "opacity-100" : "opacity-0"
-            } absolute z-40 cursor ${blinkCursor ? "blink" : ""} ${
+            } absolute  cursor ${blinkCursor ? "blink" : ""} ${
               inputValue.length === 0 && "ml-4"
-            } h-[4.4vh] lg:h-[7.5vh] w-[0.14rem] bg-black`}
+            } h-[35px] md:h-[35px] w-[0.14rem] z-30 bg-black`}
           ></div>
 
-          <p className="tracking-[0.15rem] text-zinc-800 leading-[4.7vh] lg:leading-[10vh] px-4">
+          <p className="tracking-[0.15rem] text-zinc-800 leading-9 px-4">
             {random !== null &&
               text[random].content.split("").map((element, index) => {
                 return (
@@ -325,12 +324,12 @@ const Home = ({ sendData }) => {
             onClick={() => {
               window.location.reload();
             }}
-            className="flex gap-2 rounded-lg px-3 py-2"
+            className="flex gap-2 items-center justify-center rounded-lg px-3 py-2"
           >
-            <span className="bg-[#e63946] rounded-full h-[1.7rem] w-[1.7rem] flex justify-center items-center">
-              <i className="ri-history-line text-white"></i>
+            <span className="bg-[#e63946] rounded-full p-5 md:p-4 h-[1.7rem] w-[1.7rem] flex justify-center items-center">
+              <i className="ri-history-line text-white text-2xl md:text-xl"></i>
             </span>
-            <p className="text-[#0a335cac] font-semibold">
+            <p className="text-[#0a335cac] font-semibold text-xl md:text-lg">
               {count === 60 ? 1 : 0}:
               {count === 60 ? "00" : `${count < 10 ? "0" : ""}${count}`}
             </p>
