@@ -46,6 +46,7 @@ const Home = ({ sendData }) => {
   const [showInfo, setShowInfo] = useState(false);
 
   function getTypingData() {
+    inputDetail.current.blur();
     findTypingSpeed();
     findTypingAccuracy();
     setShowInfo(true);
@@ -56,13 +57,21 @@ const Home = ({ sendData }) => {
       .slice(0, validIndex)
       .split(" ")
       .filter((word) => (word.length === 0 ? false : true));
-    console.log(validWord);
     setTypingSpeed(validWord.length);
   }
 
   function findTypingAccuracy() {
     let accuracy = (validIndex / inputValue.length) * 100;
-    setTypingAccuracy(accuracy > 0 ? accuracy.toFixed(0) : 0);
+    
+    if(accuracy>100){
+      setTypingAccuracy(100);
+    }
+    else if(accuracy < 0){
+      setTypingAccuracy(0);
+    }
+    else{
+      setTypingAccuracy(accuracy > 0 ? accuracy.toFixed(0) : 0);
+    }
   }
 
   const startInterval = () => {
@@ -87,8 +96,10 @@ const Home = ({ sendData }) => {
 
   function handleInput(e, textLength) {
     !intervalId && startInterval();
-    console.log(e.target.value);
-    console.log(textDetail);
+    
+    if(count===0){
+      setIsFocus(false);
+    }
 
     if (
       e.target.value[textLength - 1] ===
@@ -113,7 +124,6 @@ const Home = ({ sendData }) => {
               textDetail.current[validIndex].offsetWidth,
         duration: 0.2,
       })
-      console.log(inputDetail)
       
       if(validIndex === textDetail.current.length-1){
         stopInterval();
@@ -186,7 +196,7 @@ const Home = ({ sendData }) => {
       }
     }, 800);
 
-    count === 0 && getTypingData();
+    // count === 0 && getTypingData();
 
     return () => {
       clearTimeout(timeoutId);
@@ -196,7 +206,7 @@ const Home = ({ sendData }) => {
         duration: 0.1,
         ease: "cubic-bezier(0.65, 0, 0.35, 1)",
       });
-      // count === 0 && getTypingData();
+      count === 0 && getTypingData();
     };
   }, [count, textDetail.current, inputValue, isTyping, random]);
   return (
@@ -229,7 +239,7 @@ const Home = ({ sendData }) => {
             <h2 className="text-center leading-none h-[25.5vw] w-[25.5vw] md:h-[18.5vw] md:w-[18.5vw] lg:h-[13.5rem] lg:w-[13.5rem] flex flex-col items-center justify-center border-[0.35rem] md:border-[0.5rem] rounded-full border-[#178b7e]">
               <span className="text-[#2a9d8f] text-[7vw] font-medium md:text-[5vw] lg:text-[3.6rem]">
                 {typingAccuracy !== null ? typingAccuracy : 0}%
-              </span>{" "}
+              </span>
               <span className="font-bold text-[#10423c] text-[2.5vw] md:text-[2vw] lg:text-[1.8rem]">
                 Accuracy
               </span>
@@ -292,10 +302,9 @@ const Home = ({ sendData }) => {
           <input
             className="opacity-[0] absolute top-0 left-0"
             onChange={(e) => {
-              console.log("chala");
               e.preventDefault();
               textDetail.current !== null && validIndex < textDetail.current.length && 
-                handleInput(e, e.target.value.length);
+               handleInput(e, e.target.value.length);
               validIndex <= textDetail.current.length && handleScroll(e);
               setInputValue(e.target.value);
               setIsTyping(true);
