@@ -8,23 +8,30 @@ const Home = ({ sendData }) => {
 
   const [text, setText] = useState([
     {
-      content: "In the heart",
+      content: "The quick brown Fox jumps over the lazy Dog near the riverbank. As sunlight filters through the trees, the serene landscape becomes a picturesque scene. Birds chirp melodiously, adding to the tranquility of the morning. Meanwhile, in a nearby Cottage, the aroma of freshly brewed Coffee fills the air. A writer sits by the window, penning stories inspired by the beauty of Nature. Outside, a gentle Breeze rustles the leaves, creating a soothing symphony. Every detail of this peaceful moment reminds us to appreciate the simple pleasures in life. Enjoy & cherish each day, 365 days a year, 24/7! Remember: Love, Laugh, & Live!",
+    },
+    {
+      content: "A sleek black Cat prowls silently along the fence, its eyes glinting in the moonlight. The sound of distant Thunder rumbles through the night, promising rain. Thunderstorms are most common in tropical regions. Inside a cozy Library, the clock strikes midnight, and a Reader turns the pages of an ancient book. The oldest known book is the \"Epic of Gilgamesh,\" dating back to 2100 BC. The scent of old paper mingles with the fragrance of blooming Jasmine outside. Embrace the mysteries of life, where every second counts. Explore, Dream, & Discover! Life is full of adventures waiting to unfold, 24 hours a day."
     },
     {
       content:
-        "High above the city skyline, the moon casts its gentle glow upon the bustling streets below. Stars twinkle in the velvet sky, like diamonds scattered across a vast canvas. The night air is crisp and cool, carrying with it the scent of distant flowers and freshly fallen rain.",
+        "In a quiet Mountain cabin, a family gathers around a roaring Fireplace. Snow falls gently outside, blanketing the world in white. Snowflakes are unique, with no two being exactly alike. The scent of pine mingles with the aroma of hot Chocolate, which was first introduced to Europe by the Spanish in the 16th century. Children play board games while the adults share stories and laughter. The first board game, \"Senet,\" originated in ancient Egypt. The warmth of the fire and the joy of togetherness make this moment special. Love & be loved, always. Enjoy every precious second, winter or summer, rain or shine.",
     },
     {
       content:
-        "Deep within the enchanted forest, ancient trees stand sentinel, their gnarled roots intertwining like old friends. Moss blankets the forest floor, softening each step with its cushiony embrace. Sunlight filters through the dense canopy above, casting dappled patterns of light and shadow. Birds flit from branch to branch, their cheerful songs echoing through the woods. A gentle stream meanders its way through the heart of the forest, babbling softly as it goes. Wildflowers bloom in vibrant hues, painting the landscape with their beauty. Here, time moves at its own pace, in harmony with the rhythm of nature.",
+        "The International Space Station (ISS) orbits Earth approximately 16 times a day, providing a unique vantage point of our planet. Astronauts aboard the ISS conduct various scientific experiments in microgravity. The ISS travels at a speed of about 28,000 kilometers per hour (17,500 miles per hour). Communication with Earth is maintained through a network of satellites. Life in space requires careful management of resources like water and air. Enjoy & cherish each achievement in space exploration, as they pave the way for future discoveries. The sky is not the limit; it's just the beginning. Remember: Innovate, Inspire, & Explore!",
     },
     {
       content:
-        "On the windswept moors, where the sky meets the earth in an endless expanse of blue, lies a solitary cottage. Its thatched roof slopes gently downward, weathered by years of wind and rain. Smoke curls lazily from the chimney, carrying with it the comforting scent of burning wood. Inside, a fire crackles cheerfully in the hearth, casting a warm glow upon the rustic furnishings. The air is filled with the sound of laughter and conversation, as friends gather round to share stories and good cheer. Outside, the moors stretch away into the distance, wild and untamed, a reminder of the beauty and power of the natural world.",
+        "The Great Wall of China, stretching over 13,000 miles, is one of the most iconic structures built by human hands. Construction of the wall began as early as the 7th century BC, primarily to protect against invasions. It consists of walls, watchtowers, and fortresses made from a variety of materials, including stone, brick, and tamped earth. The Great Wall is a UNESCO World Heritage site and attracts millions of visitors each year. It stands as a testament to human ingenuity and perseverance. Visit & respect historical monuments, as they tell the stories of our past. Protect & preserve for future generations.",
     },
     {
       content:
-        "In the heart of the desert, where the sun beats down relentlessly upon the arid landscape, lies an oasis of green. Palm trees sway gently in the breeze, their fronds rustling softly as if whispering secrets to the wind. Crystal clear water gushes forth from a natural spring, forming a shimmering pool that reflects the cloudless sky above. Birds flock to the oasis, their vibrant plumage a stark contrast to the muted tones of the desert. In the shade of the palms, travelers find respite from the scorching heat, pausing to rest and replenish their strength before continuing on their journey.",
+        "The Amazon Rainforest, often referred to as the \"lungs of the Earth,\" produces around 20% of the world's oxygen. Spanning over 5.5 million square kilometers (2.1 million square miles), it is the largest tropical rainforest on the planet. The Amazon is home to an estimated 390 billion individual trees, comprising around 16,000 different species. It plays a crucial role in regulating the Earth's climate. However, deforestation poses a significant threat to this vital ecosystem. Appreciate & protect the natural wonders of our world, as they are irreplaceable. Conserve, educate, & act to ensure a sustainable future for all.",
+    },
+    {
+      content:
+        "The Mariana Trench, located in the western Pacific Ocean, is the deepest part of the world's oceans. The trench's maximum known depth is approximately 36,070 feet (10,994 meters) at the Challenger Deep. This remote underwater canyon is home to unique and often bizarre life forms that have adapted to extreme pressures and darkness. In 1960, the bathyscaphe Trieste reached the bottom of the trench, piloted by Jacques Piccard and Don Walsh. The exploration of such depths helps us understand more about our planet's geology and marine biology. Dive into the unknown & seek knowledge, for the ocean holds many secrets.",
     },
   ]);
 
@@ -33,7 +40,7 @@ const Home = ({ sendData }) => {
   const [random, setRandom] = useState(null);
   const [validIndex, setValidIndex] = useState(0);
   const [invalidCharPos, setInvalidCharPos] = useState(null);
-  const [count, setCount] = useState(10);
+  const [count, setCount] = useState(60);
   const [isFocus, setIsFocus] = useState(false);
   const textBoxDetail = useRef(null);
   const inputDetail = useRef(null);
@@ -62,7 +69,7 @@ const Home = ({ sendData }) => {
 
   function findTypingAccuracy() {
     let accuracy = (validIndex / inputValue.length) * 100;
-    
+
     if(accuracy>100){
       setTypingAccuracy(100);
     }
