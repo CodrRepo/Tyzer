@@ -2,9 +2,10 @@ import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
+import CustomEase from "gsap/CustomEase";
 
 const Home = ({ sendData }) => {
-  gsap.registerPlugin(useGSAP, ScrollToPlugin);
+  gsap.registerPlugin(useGSAP, ScrollToPlugin, CustomEase);
 
   const [text, setText] = useState([
     {
@@ -38,11 +39,12 @@ const Home = ({ sendData }) => {
   ]);
 
   let textDetail = useRef([]);
+  const timeOptionsDetail = useRef([])
 
   const [random, setRandom] = useState(null);
   const [validIndex, setValidIndex] = useState(0);
   const [invalidCharPos, setInvalidCharPos] = useState(null);
-  const [count, setCount] = useState(60);
+  const [count, setCount] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
   const textBoxDetail = useRef(null);
   const inputDetail = useRef(null);
@@ -53,6 +55,8 @@ const Home = ({ sendData }) => {
   const [typingSpeed, setTypingSpeed] = useState(0);
   const [typingAccuracy, setTypingAccuracy] = useState(0);
   const [showInfo, setShowInfo] = useState(false);
+  const [isReload, setIsReload] = useState(true);
+  const [timeIndex, setTimeIndex] = useState(1);
 
   function getTypingData() {
     inputDetail.current.blur();
@@ -66,7 +70,7 @@ const Home = ({ sendData }) => {
       .slice(0, validIndex)
       .split(" ")
       .filter((word) => (word.length === 0 ? false : true));
-    setTypingSpeed(validWord.length);
+    setTypingSpeed((validWord.length)/(timeOptionsDetail.current[timeIndex].textContent.split(" ")[0]/60));
   }
 
   function findTypingAccuracy() {
@@ -101,9 +105,23 @@ const Home = ({ sendData }) => {
     setIntervalId(null);
   };
 
+  const setCursorPosition = () => {
+    gsap.to(".cursor", {
+      top:
+        validIndex !== textDetail.current.length - 1
+          ? `${textDetail.current[validIndex].offsetTop}px`
+          : textDetail.current[validIndex].offsetTop,
+      left:
+        validIndex !== textDetail.current.length - 1
+          ? textDetail.current[validIndex].offsetLeft
+          : textDetail.current[validIndex].offsetLeft +
+            textDetail.current[validIndex].offsetWidth,
+      duration: 0.2,
+    });
+  };
+
   function handleInput(e, textLength) {
     !intervalId && startInterval();
-
     if (count === 0) {
       setIsFocus(false);
     }
@@ -116,52 +134,38 @@ const Home = ({ sendData }) => {
         setValidIndex((previous) => previous + 1);
 
       gsap.to(textDetail.current[validIndex], {
-        onStart: ()=>{
+        onStart: () => {
           gsap.to(textDetail.current[validIndex], {
-            backgroundColor: '',
-          })
+            backgroundColor: "",
+          });
         },
-        color: '#70e000',
+        color: "#70e000",
         duration: 0.01,
-      })
-
-      gsap.to(".cursor", {
-        top:
-          validIndex !== textDetail.current.length - 1
-            ? textDetail.current[validIndex + 1].offsetTop
-            : textDetail.current[validIndex].offsetTop,
-        left:
-          validIndex !== textDetail.current.length - 1
-            ? textDetail.current[validIndex + 1].offsetLeft
-            : textDetail.current[validIndex].offsetLeft +
-              textDetail.current[validIndex].offsetWidth,
-        duration: 0.2,
       });
+
+      setCursorPosition();
 
       if (validIndex === textDetail.current.length - 1) {
         stopInterval();
         setIsFocus(false);
-        inputDetail.current.value = "";
         setValidIndex(0);
         getTypingData();
       }
-
-    }else{
+    } else {
       setInvalidCharPos(() => validIndex);
       gsap.to(textDetail.current[validIndex], {
-        backgroundColor: '#ff3c38',
+        backgroundColor: "#ff3c38",
         duration: 0.01,
 
-        onComplete: ()=>{
+        onComplete: () => {
           gsap.to(textDetail.current[validIndex], {
-            backgroundColor: '',
+            backgroundColor: "",
             delay: 0.4,
             duration: 0.1,
-          })
-        }
-      })
+          });
+        },
+      });
       textDetail.current[validIndex].classList.add("rounded-lg");
-
     }
   }
 
@@ -180,8 +184,8 @@ const Home = ({ sendData }) => {
         },
         {
           scrollTo: nextOffsetTop,
-          duration: 0.2,
-          ease: "cubic-bezier(0.65, 0, 0.35, 1)",
+          duration: 0.25,
+          ease: CustomEase.create("scrollSlide", "0.65, 0, 0.35, 1"),
         }
       );
     }
@@ -197,8 +201,56 @@ const Home = ({ sendData }) => {
     }
   }
 
+  function moveFollwer(leftValue, itemWidth) {
+    gsap.to(".follower", {
+      x: leftValue,
+      duration: 0.5,
+      width: itemWidth,
+      ease: CustomEase.create("sliding", "0.16, 1, 0.3, 1"),
+    });
+  }
+
+  const reset = () => {
+    setRandom(Math.floor(Math.random() * text.length));
+    setValidIndex(0);
+    setInvalidCharPos(null);
+    setCount(JSON.parse(localStorage.getItem("tyzerTimeValue")));
+    setIsFocus(false);
+    setIsTyping(false);
+    setInputValue("");
+    setTypingSpeed(0);
+    setTypingAccuracy(0);
+    setShowInfo(false);
+    stopInterval();
+    textBoxDetail.current.scrollTo(0, 0);
+    inputDetail.current.value = "";
+    inputDetail.current.focus();
+    textDetail.current.map((element) => (element.style.color = "black"));
+  };
+
+  function sendDataLocalStorage(e, index){
+    localStorage.setItem(
+      "tyzerTimeValue",
+      JSON.stringify(e.target.textContent.split(" ")[0]),
+    );
+
+    localStorage.setItem(
+      "tyzerTimeIndexValue",
+      JSON.stringify(index),
+    );
+  }
+
   useEffect(() => {
     random === null && setRandom(Math.floor(Math.random() * text.length));
+    textDetail.current.length > 0 && setCursorPosition();
+    let timeValue = JSON.parse(localStorage.getItem("tyzerTimeValue"));
+    let timeIndexValue = JSON.parse(localStorage.getItem("tyzerTimeIndexValue"));
+    // console.log(timeValue);
+    // console.log(timeOptionsDetail.current[1].offsetLeft);
+    count === null && (timeValue === null ? setCount(60): setCount(timeValue));
+    count === null && (timeValue === null ? setTimeIndex(1): setTimeIndex(timeIndexValue));
+    
+    timeOptionsDetail.current.length>0 && moveFollwer(timeOptionsDetail.current[timeIndexValue].offsetLeft, timeOptionsDetail.current[timeIndexValue].offsetWidth);
 
     const timeoutId = setTimeout(() => {
       if (!isTyping && inputValue !== "") {
@@ -212,17 +264,18 @@ const Home = ({ sendData }) => {
     return () => {
       clearTimeout(timeoutId);
     };
-  }, [count, textDetail.current, inputValue, isTyping, random]);
+  }, [count,timeIndex, textDetail.current,timeOptionsDetail, inputValue, isTyping, random]);
+
   return (
     <div className="">
       <div className="w-full flex items-center justify-center flex-col gap-3">
         <h1 className="font-bold text-5xl text-[#0a335c]">Tyzer</h1>
         <h3 className="text-xl text-[#0a335cac]">
-          Give yourself{" "}
+          Give yourself {" "}
           <span className="text-[#0a335ce4] font-medium underline underline-offset-4">
             1 min
-          </span>{" "}
-          to test and clarify your typing speed with{" "}
+          </span>
+          {" "} to test and clarify your typing speed with {" "}
           <span className="text-[#0a335ce4] font-medium underline underline-offset-4">
             English layout
           </span>
@@ -287,9 +340,7 @@ const Home = ({ sendData }) => {
             }}
             className={`${
               isFocus ? "opacity-100" : "opacity-0"
-            } absolute z-[999] cursor ${blinkCursor ? "blink" : ""} ${
-              validIndex === 0 && "ml-4"
-            } h-[39px] ${
+            } absolute z-[50] cursor ${blinkCursor ? "blink" : ""} h-[40px] ${
               blinkCursor ? "w-[0.1rem]" : "w-[0.14rem]"
             } z-30 bg-black`}
           ></div>
@@ -326,7 +377,6 @@ const Home = ({ sendData }) => {
             }}
             ref={inputDetail}
             onKeyDown={(e) => {
-              console.log(e.key);
               setIsTyping(true);
               if (e.key === "Backspace" || e.code === 8) {
                 e.preventDefault();
@@ -349,10 +399,10 @@ const Home = ({ sendData }) => {
           />
         </div>
 
-        <div className="flex gap-9">
+        <div className="flex items-center gap-9 mt-3">
           <button
             onClick={() => {
-              window.location.reload();
+              reset();
             }}
             className="flex gap-2 items-center justify-center rounded-lg px-3 py-2"
           >
@@ -360,10 +410,47 @@ const Home = ({ sendData }) => {
               <i className="ri-history-line text-white text-2xl md:text-xl"></i>
             </span>
             <p className="text-[#0a335cac] font-semibold text-xl md:text-lg">
-              {count === 60 ? 1 : 0}:
-              {count === 60 ? "00" : `${count < 10 ? "0" : ""}${count}`}
+              {Math.floor(count/60)}:
+              {Math.floor((count / 60 - Math.floor(count / 60)) * 60) === 0
+                ? "00"
+                : `${
+                    Math.floor((count / 60 - Math.floor(count / 60)) * 60) < 10
+                      ? "0"
+                      : ""
+                  }${((count / 60 - Math.floor(count / 60)) * 60).toFixed(0)}`}
             </p>
           </button>
+          <div className="timeOptions z-40 flex gap-2 relative">
+            <div
+             className={`follower z-20 bg-[#ffa200] rounded-lg h-full w-[50px] absolute top-0 left-0`}></div>
+            <h4 className="font-semibold z-40 text-xl md:text-lg">
+              Set{" "}
+              <i className="ri-timer-flash-fill text-[#ffa200] font-normal"></i>
+              :
+            </h4>
+            <ul className="flex items-center z-40 font-semibold">
+              {["30 sec", "60 sec", "120 sec"].map((element, index) => (
+                <li
+                  className={`cursor-default px-3 py-1`}
+                  ref={(el)=> timeOptionsDetail.current.length<3 && timeOptionsDetail.current.push(el)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setCount(e.target.textContent.split(" ")[0]);
+                    console.log(e.target.textContent.split(" ")[0]);
+                    setTimeIndex(index);
+                    // moveFollwer(e.target.offsetLeft, e.target.offsetWidth);
+                    sendDataLocalStorage(e, index),
+                    reset();
+                    inputDetail.current.focus();
+                    console.log(timeOptionsDetail)
+                  }}
+                  key={index}
+                >
+                  <span className={`${timeIndex === index ? 'text-[black]': 'text-[#0a335cac]'}`}>{element}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </div>
