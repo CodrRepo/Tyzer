@@ -108,14 +108,10 @@ const Home = ({ sendData }) => {
   const setCursorPosition = () => {
     gsap.to(".cursor", {
       top:
-        validIndex !== textDetail.current.length - 1
-          ? `${textDetail.current[validIndex].offsetTop}px`
-          : textDetail.current[validIndex].offsetTop,
-      left:
-        validIndex !== textDetail.current.length - 1
-          ? textDetail.current[validIndex].offsetLeft
-          : textDetail.current[validIndex].offsetLeft +
-            textDetail.current[validIndex].offsetWidth,
+        validIndex < textDetail.current.length
+        && `${textDetail.current[validIndex].offsetTop}px`,
+      left:validIndex < textDetail.current.length
+          && textDetail.current[validIndex].offsetLeft,
       duration: 0.2,
     });
   };
