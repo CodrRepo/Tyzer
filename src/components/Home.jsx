@@ -241,12 +241,10 @@ const Home = ({ sendData }) => {
     textDetail.current.length > 0 && setCursorPosition();
     let timeValue = JSON.parse(localStorage.getItem("tyzerTimeValue"));
     let timeIndexValue = JSON.parse(localStorage.getItem("tyzerTimeIndexValue"));
-    // console.log(timeValue);
-    // console.log(timeOptionsDetail.current[1].offsetLeft);
     count === null && (timeValue === null ? setCount(60): setCount(timeValue));
     count === null && (timeValue === null ? setTimeIndex(1): setTimeIndex(timeIndexValue));
     
-    timeOptionsDetail.current.length>0 && moveFollwer(timeOptionsDetail.current[timeIndexValue].offsetLeft, timeOptionsDetail.current[timeIndexValue].offsetWidth);
+    timeOptionsDetail.current.length>0 && moveFollwer(timeOptionsDetail.current[timeIndexValue !== null ?timeIndexValue: timeIndex].offsetLeft, timeOptionsDetail.current[timeIndexValue !== null ?timeIndexValue: timeIndex].offsetWidth);
 
     const timeoutId = setTimeout(() => {
       if (!isTyping && inputValue !== "") {
