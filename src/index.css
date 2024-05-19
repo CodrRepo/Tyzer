@@ -3,10 +3,13 @@
 @tailwind utilities;
 
 :root {
-  /* font-family: gilroy, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif; */
   font-family: 'gil';
-  /* font-weight: 400; */
   box-sizing: border-box;
+}
+
+.testPara{
+  font-family: "Source Code Pro";
+  font-weight: bold;
 }
 
 .blink{

@@ -8,14 +8,16 @@ const Home = ({ sendData }) => {
 
   const [text, setText] = useState([
     {
-      content: "The quick brown Fox jumps over the lazy Dog near the riverbank. As sunlight filters through the trees, the serene landscape becomes a picturesque scene. Birds chirp melodiously, adding to the tranquility of the morning. Meanwhile, in a nearby Cottage, the aroma of freshly brewed Coffee fills the air. A writer sits by the window, penning stories inspired by the beauty of Nature. Outside, a gentle Breeze rustles the leaves, creating a soothing symphony. Every detail of this peaceful moment reminds us to appreciate the simple pleasures in life. Enjoy & cherish each day, 365 days a year, 24/7! Remember: Love, Laugh, & Live!",
-    },
-    {
-      content: "A sleek black Cat prowls silently along the fence, its eyes glinting in the moonlight. The sound of distant Thunder rumbles through the night, promising rain. Thunderstorms are most common in tropical regions. Inside a cozy Library, the clock strikes midnight, and a Reader turns the pages of an ancient book. The oldest known book is the \"Epic of Gilgamesh,\" dating back to 2100 BC. The scent of old paper mingles with the fragrance of blooming Jasmine outside. Embrace the mysteries of life, where every second counts. Explore, Dream, & Discover! Life is full of adventures waiting to unfold, 24 hours a day."
+      content:
+        "The quick brown Fox jumps over the lazy Dog near the riverbank. As sunlight filters through the trees, the serene landscape becomes a picturesque scene. Birds chirp melodiously, adding to the tranquility of the morning. Meanwhile, in a nearby Cottage, the aroma of freshly brewed Coffee fills the air. A writer sits by the window, penning stories inspired by the beauty of Nature. Outside, a gentle Breeze rustles the leaves, creating a soothing symphony. Every detail of this peaceful moment reminds us to appreciate the simple pleasures in life. Enjoy & cherish each day, 365 days a year, 24/7! Remember: Love, Laugh, & Live!",
     },
     {
       content:
-        "In a quiet Mountain cabin, a family gathers around a roaring Fireplace. Snow falls gently outside, blanketing the world in white. Snowflakes are unique, with no two being exactly alike. The scent of pine mingles with the aroma of hot Chocolate, which was first introduced to Europe by the Spanish in the 16th century. Children play board games while the adults share stories and laughter. The first board game, \"Senet,\" originated in ancient Egypt. The warmth of the fire and the joy of togetherness make this moment special. Love & be loved, always. Enjoy every precious second, winter or summer, rain or shine.",
+        'A sleek black Cat prowls silently along the fence, its eyes glinting in the moonlight. The sound of distant Thunder rumbles through the night, promising rain. Thunderstorms are most common in tropical regions. Inside a cozy Library, the clock strikes midnight, and a Reader turns the pages of an ancient book. The oldest known book is the "Epic of Gilgamesh," dating back to 2100 BC. The scent of old paper mingles with the fragrance of blooming Jasmine outside. Embrace the mysteries of life, where every second counts. Explore, Dream, & Discover! Life is full of adventures waiting to unfold, 24 hours a day.',
+    },
+    {
+      content:
+        'In a quiet Mountain cabin, a family gathers around a roaring Fireplace. Snow falls gently outside, blanketing the world in white. Snowflakes are unique, with no two being exactly alike. The scent of pine mingles with the aroma of hot Chocolate, which was first introduced to Europe by the Spanish in the 16th century. Children play board games while the adults share stories and laughter. The first board game, "Senet," originated in ancient Egypt. The warmth of the fire and the joy of togetherness make this moment special. Love & be loved, always. Enjoy every precious second, winter or summer, rain or shine.',
     },
     {
       content:
@@ -70,13 +72,11 @@ const Home = ({ sendData }) => {
   function findTypingAccuracy() {
     let accuracy = (validIndex / inputValue.length) * 100;
 
-    if(accuracy>100){
+    if (accuracy > 100) {
       setTypingAccuracy(100);
-    }
-    else if(accuracy < 0){
+    } else if (accuracy < 0) {
       setTypingAccuracy(0);
-    }
-    else{
+    } else {
       setTypingAccuracy(accuracy > 0 ? accuracy.toFixed(0) : 0);
     }
   }
@@ -103,8 +103,8 @@ const Home = ({ sendData }) => {
 
   function handleInput(e, textLength) {
     !intervalId && startInterval();
-    
-    if(count===0){
+
+    if (count === 0) {
       setIsFocus(false);
     }
 
@@ -114,10 +114,16 @@ const Home = ({ sendData }) => {
     ) {
       validIndex < textDetail.current.length &&
         setValidIndex((previous) => previous + 1);
-      textDetail.current[validIndex].classList.add(
-        validIndex === invalidCharPos ? "text-[#000]" : "text-[#2a9d8f]"
-      );
-      textDetail.current[validIndex].classList.remove("bg-[#e63946]");
+
+      gsap.to(textDetail.current[validIndex], {
+        onStart: ()=>{
+          gsap.to(textDetail.current[validIndex], {
+            backgroundColor: '',
+          })
+        },
+        color: '#70e000',
+        duration: 0.01,
+      })
 
       gsap.to(".cursor", {
         top:
@@ -130,28 +136,32 @@ const Home = ({ sendData }) => {
             : textDetail.current[validIndex].offsetLeft +
               textDetail.current[validIndex].offsetWidth,
         duration: 0.2,
-      })
-      
-      if(validIndex === textDetail.current.length-1){
+      });
+
+      if (validIndex === textDetail.current.length - 1) {
         stopInterval();
         setIsFocus(false);
-        inputDetail.current.value = '';
+        inputDetail.current.value = "";
         setValidIndex(0);
         getTypingData();
       }
-      ;
-    } else {
-      gsap.to(".errorCursor", {
-        opacity: 1,
-        top: textDetail.current[validIndex].offsetTop,
-        left: textDetail.current[validIndex].offsetLeft,
-        height: textDetail.current[validIndex].offsetHeight,
-        width: textDetail.current[validIndex].offsetWidth,
-        duration: 0.2,
-      });
 
+    }else{
       setInvalidCharPos(() => validIndex);
-      textDetail.current[validIndex].classList.add("text-black");
+      gsap.to(textDetail.current[validIndex], {
+        backgroundColor: '#ff3c38',
+        duration: 0.01,
+
+        onComplete: ()=>{
+          gsap.to(textDetail.current[validIndex], {
+            backgroundColor: '',
+            delay: 0.4,
+            duration: 0.1,
+          })
+        }
+      })
+      textDetail.current[validIndex].classList.add("rounded-lg");
+
     }
   }
 
@@ -178,7 +188,6 @@ const Home = ({ sendData }) => {
   }
 
   function handleInputFocus() {
-
     inputDetail.current.focus();
     setIsFocus(true);
 
@@ -188,32 +197,20 @@ const Home = ({ sendData }) => {
     }
   }
 
-
   useEffect(() => {
     random === null && setRandom(Math.floor(Math.random() * text.length));
 
     const timeoutId = setTimeout(() => {
       if (!isTyping && inputValue !== "") {
         setBlinkCursor(true);
-        gsap.to(".cursor", {
-          width: "0.1rem",
-          duration: 0.1,
-          ease: "cubic-bezier(0.65, 0, 0.35, 1)",
-        });
       }
     }, 800);
+    setIsTyping(false);
 
-    // count === 0 && getTypingData();
+    count === 0 && getTypingData();
 
     return () => {
       clearTimeout(timeoutId);
-      setIsTyping(false);
-      gsap.to(".cursor", {
-        width: "0.14rem",
-        duration: 0.1,
-        ease: "cubic-bezier(0.65, 0, 0.35, 1)",
-      });
-      count === 0 && getTypingData();
     };
   }, [count, textDetail.current, inputValue, isTyping, random]);
   return (
@@ -233,14 +230,19 @@ const Home = ({ sendData }) => {
       </div>
       <div className="relative max-w-[1000px] bg-white w-full mt-7 py-7 px-4 flex flex-col justify-center items-center rounded-md">
         <div className="absolute top-0 left-0 h-[50vh] my-7 px-4 w-full ">
-          
-          <div className={`h-full ${showInfo ? 'flex': 'hidden'} flex-col md:flex-row absolute z-[3000] justify-center items-center gap-[2vh] md:gap-[7vw] infographics top-0 left-0 bg-white w-full`}>
+          <div
+            className={`h-full ${
+              showInfo ? "flex" : "hidden"
+            } flex-col md:flex-row absolute z-[3000] justify-center items-center gap-[2vh] md:gap-[7vw] infographics top-0 left-0 bg-white w-full`}
+          >
             <div className="">
               <h2 className="text-center leading-none h-[25.5vw] w-[25.5vw] md:h-[18.5vw] md:w-[18.5vw] lg:h-[13.5rem] lg:w-[13.5rem] flex flex-col items-center justify-center border-[0.35rem] md:border-[0.5rem] rounded-full border-[#138376]">
                 <span className="text-[#2a9d8f] font-medium text-[7vw] md:text-[5vw] lg:text-[3.6rem]">
                   {typingSpeed}
                 </span>{" "}
-                <span className="font-bold text-[#10423c] text-[2.5vw] md:text-[2vw] lg:text-[1.8rem]">WPM</span>
+                <span className="font-bold text-[#10423c] text-[2.5vw] md:text-[2vw] lg:text-[1.8rem]">
+                  WPM
+                </span>
               </h2>
             </div>
             <h2 className="text-center leading-none h-[25.5vw] w-[25.5vw] md:h-[18.5vw] md:w-[18.5vw] lg:h-[13.5rem] lg:w-[13.5rem] flex flex-col items-center justify-center border-[0.35rem] md:border-[0.5rem] rounded-full border-[#178b7e]">
@@ -265,7 +267,9 @@ const Home = ({ sendData }) => {
               <span className="bg-[#2a9d8f] rounded-full h-[6vw] w-[6vw] p-5 md:p-4 md:h-[0.5vw] md:w-[0.5vw] flex justify-center items-center">
                 <i className="ri-history-line text-white text-2xl md:text-xl"></i>
               </span>
-              <p className="text-[#0a335cac] font-semibold text-xl md:text-lg">Start</p>
+              <p className="text-[#0a335cac] font-semibold text-xl md:text-lg">
+                Start
+              </p>
             </button>
           </div>
         </div>
@@ -278,22 +282,24 @@ const Home = ({ sendData }) => {
           <div
             style={{
               top: `${
-                textDetail.current.length>0 && textDetail.current[0].offsetTop
+                textDetail.current.length > 0 && textDetail.current[0].offsetTop
               }px`,
             }}
             className={`${
               isFocus ? "opacity-100" : "opacity-0"
-            } absolute  cursor ${blinkCursor ? "blink" : ""} ${
-              inputValue.length === 0 && "ml-4"
-            } h-[35px] md:h-[35px] w-[0.14rem] z-30 bg-black`}
+            } absolute z-[999] cursor ${blinkCursor ? "blink" : ""} ${
+              validIndex === 0 && "ml-4"
+            } h-[39px] ${
+              blinkCursor ? "w-[0.1rem]" : "w-[0.14rem]"
+            } z-30 bg-black`}
           ></div>
 
-          <p className="tracking-[0.15rem] text-zinc-800 leading-9 px-4">
+          <p className="testPara tracking-[0.15rem] text-black leading-9 px-4">
             {random !== null &&
               text[random].content.split("").map((element, index) => {
                 return (
                   <span
-                    className="relative font-medium text-3xl z-30"
+                    className="relative font-medium text-4xl z-30"
                     ref={(el) =>
                       textDetail.current.length < text[random].content.length &&
                       textDetail.current.push(el)
@@ -310,14 +316,22 @@ const Home = ({ sendData }) => {
             className="opacity-[0] absolute top-0 left-0"
             onChange={(e) => {
               e.preventDefault();
-              textDetail.current !== null && validIndex < textDetail.current.length && 
-               handleInput(e, e.target.value.length);
+              textDetail.current !== null &&
+                validIndex < textDetail.current.length &&
+                handleInput(e, e.target.value.length);
               validIndex <= textDetail.current.length && handleScroll(e);
               setInputValue(e.target.value);
               setIsTyping(true);
               setBlinkCursor(false);
             }}
             ref={inputDetail}
+            onKeyDown={(e) => {
+              console.log(e.key);
+              setIsTyping(true);
+              if (e.key === "Backspace" || e.code === 8) {
+                e.preventDefault();
+              }
+            }}
             autoFocus={true}
             onFocus={() => {
               setIsFocus(true);
