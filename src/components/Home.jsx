@@ -39,7 +39,7 @@ const Home = ({ sendData }) => {
   ]);
 
   let textDetail = useRef([]);
-  const timeOptionsDetail = useRef([])
+  const timeOptionsDetail = useRef([]);
 
   const [random, setRandom] = useState(null);
   const [validIndex, setValidIndex] = useState(0);
@@ -55,7 +55,6 @@ const Home = ({ sendData }) => {
   const [typingSpeed, setTypingSpeed] = useState(0);
   const [typingAccuracy, setTypingAccuracy] = useState(0);
   const [showInfo, setShowInfo] = useState(false);
-  const [isReload, setIsReload] = useState(true);
   const [timeIndex, setTimeIndex] = useState(1);
 
   function getTypingData() {
@@ -70,7 +69,10 @@ const Home = ({ sendData }) => {
       .slice(0, validIndex)
       .split(" ")
       .filter((word) => (word.length === 0 ? false : true));
-    setTypingSpeed((validWord.length)/(timeOptionsDetail.current[timeIndex].textContent.split(" ")[0]/60));
+    setTypingSpeed(
+      validWord.length /
+        (timeOptionsDetail.current[timeIndex].textContent.split(" ")[0] / 60)
+    );
   }
 
   function findTypingAccuracy() {
@@ -108,10 +110,11 @@ const Home = ({ sendData }) => {
   const setCursorPosition = () => {
     gsap.to(".cursor", {
       top:
-        validIndex < textDetail.current.length
-        && `${textDetail.current[validIndex].offsetTop}px`,
-      left:validIndex < textDetail.current.length
-          && textDetail.current[validIndex].offsetLeft,
+        validIndex < textDetail.current.length &&
+        `${textDetail.current[validIndex].offsetTop}px`,
+      left:
+        validIndex < textDetail.current.length &&
+        textDetail.current[validIndex].offsetLeft,
       duration: 0.2,
     });
   };
@@ -121,6 +124,10 @@ const Home = ({ sendData }) => {
     if (count === 0) {
       setIsFocus(false);
     }
+
+    gsap.to('.cursor', {
+      width: '0.1rem'
+    })
 
     if (
       e.target.value[textLength - 1] ===
@@ -199,7 +206,7 @@ const Home = ({ sendData }) => {
 
   function moveFollwer(leftValue, itemWidth) {
     gsap.to(".follower", {
-      x: leftValue,
+      x: `${leftValue}px`,
       duration: 0.5,
       width: itemWidth,
       ease: CustomEase.create("sliding", "0.16, 1, 0.3, 1"),
@@ -224,52 +231,82 @@ const Home = ({ sendData }) => {
     textDetail.current.map((element) => (element.style.color = "black"));
   };
 
-  function sendDataLocalStorage(e, index){
+  function sendDataLocalStorage(e, index) {
     localStorage.setItem(
       "tyzerTimeValue",
-      JSON.stringify(e.target.textContent.split(" ")[0]),
+      JSON.stringify(e.target.textContent.split(" ")[0])
     );
 
-    localStorage.setItem(
-      "tyzerTimeIndexValue",
-      JSON.stringify(index),
-    );
+    localStorage.setItem("tyzerTimeIndexValue", JSON.stringify(index));
   }
 
   useEffect(() => {
     random === null && setRandom(Math.floor(Math.random() * text.length));
     textDetail.current.length > 0 && setCursorPosition();
     let timeValue = JSON.parse(localStorage.getItem("tyzerTimeValue"));
-    let timeIndexValue = JSON.parse(localStorage.getItem("tyzerTimeIndexValue"));
-    count === null && (timeValue === null ? setCount(60): setCount(timeValue));
-    count === null && (timeValue === null ? setTimeIndex(1): setTimeIndex(timeIndexValue));
-    
-    timeOptionsDetail.current.length>0 && moveFollwer(timeOptionsDetail.current[timeIndexValue !== null ?timeIndexValue: timeIndex].offsetLeft, timeOptionsDetail.current[timeIndexValue !== null ?timeIndexValue: timeIndex].offsetWidth);
+    let timeIndexValue = JSON.parse(
+      localStorage.getItem("tyzerTimeIndexValue")
+    );
+    count === null && (timeValue === null ? setCount(60) : setCount(timeValue));
+    count === null &&
+      (timeValue === null ? setTimeIndex(1) : setTimeIndex(timeIndexValue));
+
+    timeOptionsDetail.current.length > 0 &&
+      moveFollwer(
+        timeOptionsDetail.current[
+          timeIndexValue !== null ? timeIndexValue : timeIndex
+        ].offsetLeft,
+        timeOptionsDetail.current[
+          timeIndexValue !== null ? timeIndexValue : timeIndex
+        ].offsetWidth
+      );
 
     const timeoutId = setTimeout(() => {
-      if (!isTyping && inputValue !== "") {
+      if (inputValue !== "") {
         setBlinkCursor(true);
+        gsap.to('.cursor', {
+          width: '0.16rem',
+          duration: 0.65,
+        })
       }
-    }, 800);
-    setIsTyping(false);
+    }, 650);
 
     count === 0 && getTypingData();
+    count === 0
+      ? gsap.to(".ri-history-line", {
+          color: "#00B42A",
+          fontWeight: "600",
+          duration: 0.3,
+        })
+      : gsap.to(".ri-history-line", {
+          color: "#ff3c38",
+          fontWeight: "600",
+          duration: 0.3,
+        });
 
     return () => {
       clearTimeout(timeoutId);
     };
-  }, [count,timeIndex, textDetail.current,timeOptionsDetail, inputValue, isTyping, random]);
+  }, [
+    count,
+    timeIndex,
+    textDetail.current,
+    timeOptionsDetail,
+    inputValue,
+    isTyping,
+    random,
+  ]);
 
   return (
     <div className="">
       <div className="w-full flex items-center justify-center flex-col gap-3">
         <h1 className="font-bold text-5xl text-[#0a335c]">Tyzer</h1>
         <h3 className="text-xl text-[#0a335cac]">
-          Give yourself {" "}
+          Give yourself{" "}
           <span className="text-[#0a335ce4] font-medium underline underline-offset-4">
             1 min
-          </span>
-          {" "} to test and clarify your typing speed with {" "}
+          </span>{" "}
+          to test and clarify your typing speed with{" "}
           <span className="text-[#0a335ce4] font-medium underline underline-offset-4">
             English layout
           </span>
@@ -282,24 +319,26 @@ const Home = ({ sendData }) => {
               showInfo ? "flex" : "hidden"
             } flex-col md:flex-row absolute z-[3000] justify-center items-center gap-[2vh] md:gap-[7vw] infographics top-0 left-0 bg-white w-full`}
           >
-            <div className="">
-              <h2 className="text-center leading-none h-[25.5vw] w-[25.5vw] md:h-[18.5vw] md:w-[18.5vw] lg:h-[13.5rem] lg:w-[13.5rem] flex flex-col items-center justify-center border-[0.35rem] md:border-[0.5rem] rounded-full border-[#138376]">
-                <span className="text-[#2a9d8f] font-medium text-[7vw] md:text-[5vw] lg:text-[3.6rem]">
-                  {typingSpeed}
-                </span>{" "}
-                <span className="font-bold text-[#10423c] text-[2.5vw] md:text-[2vw] lg:text-[1.8rem]">
-                  WPM
-                </span>
-              </h2>
+            <div className="flex justify-between w-[50%]">
+              {[
+                { typingSpeed: typingSpeed, typingCategory: "WPM", icon: "flashlight", color: "text-[#ffa200]" },
+                { typingSpeed: typingAccuracy, typingCategory: "Accuracy", icon: "focus-2", color: "text-[#00B42A]" },
+              ].map((element, index) => {
+                return (
+                  <div className=" flex items-center">
+                    <i class={`ri-${element.icon}-fill text-[19vh] ${element.color}`}></i>
+                    <h2 className="text-center leading-none flex flex-col">
+                      <span className="text-[#000] font-medium text-[7vw] md:text-[5vw] lg:text-[3.6rem]">
+                        {element.typingSpeed}
+                      </span>{" "}
+                      <span className="font-bold text-[#cfcfcf] text-[2.5vw] md:text-[1.5vw] lg:text-[1.3rem]">
+                        {element.typingCategory}
+                      </span>
+                    </h2>
+                  </div>
+                );
+              })}
             </div>
-            <h2 className="text-center leading-none h-[25.5vw] w-[25.5vw] md:h-[18.5vw] md:w-[18.5vw] lg:h-[13.5rem] lg:w-[13.5rem] flex flex-col items-center justify-center border-[0.35rem] md:border-[0.5rem] rounded-full border-[#178b7e]">
-              <span className="text-[#2a9d8f] text-[7vw] font-medium md:text-[5vw] lg:text-[3.6rem]">
-                {typingAccuracy !== null ? typingAccuracy : 0}%
-              </span>
-              <span className="font-bold text-[#10423c] text-[2.5vw] md:text-[2vw] lg:text-[1.8rem]">
-                Accuracy
-              </span>
-            </h2>
           </div>
 
           <div
@@ -334,9 +373,7 @@ const Home = ({ sendData }) => {
             }}
             className={`${
               isFocus ? "opacity-100" : "opacity-0"
-            } absolute z-[50] cursor ${blinkCursor ? "blink" : ""} h-[40px] ${
-              blinkCursor ? "w-[0.1rem]" : "w-[0.14rem]"
-            } z-30 bg-black`}
+            } absolute z-[50] cursor ${blinkCursor ? "blink" : ""} h-[40px]  z-30 bg-black`}
           ></div>
 
           <p className="testPara tracking-[0.15rem] text-black leading-9 px-4">
@@ -393,30 +430,38 @@ const Home = ({ sendData }) => {
           />
         </div>
 
-        <div className="flex items-center gap-9 mt-3">
+        <div className="flex items-center gap-9 mt-5">
           <button
             onClick={() => {
               reset();
             }}
-            className="flex gap-2 items-center justify-center rounded-lg px-3 py-2"
+            className="flex items-center justify-center rounded-lg"
           >
-            <span className="bg-[#e63946] rounded-full p-5 md:p-4 h-[1.7rem] w-[1.7rem] flex justify-center items-center">
-              <i className="ri-history-line text-white text-2xl md:text-xl"></i>
+            <span className="">
+              <i className="ri-history-line text-[#e63946] font-semibold text-2xl md:text-2xl"></i>
             </span>
-            <p className="text-[#0a335cac] font-semibold text-xl md:text-lg">
-              {Math.floor(count/60)}:
-              {Math.floor((count / 60 - Math.floor(count / 60)) * 60) === 0
-                ? "00"
-                : `${
-                    Math.floor((count / 60 - Math.floor(count / 60)) * 60) < 10
-                      ? "0"
-                      : ""
-                  }${((count / 60 - Math.floor(count / 60)) * 60).toFixed(0)}`}
+            <p className="text-[#0a335cac] text-left font-semibold text-xl md:text-lg">
+              <span className="inline-block w-[1.3rem] text-right">
+                {Math.floor(count / 60)}:
+              </span>
+              <span className="inline-block w-[2rem] pl-[0.1rem]">
+                {Math.floor((count / 60 - Math.floor(count / 60)) * 60) === 0
+                  ? "00"
+                  : `${
+                      Math.floor((count / 60 - Math.floor(count / 60)) * 60) <
+                      10
+                        ? "0"
+                        : ""
+                    }${((count / 60 - Math.floor(count / 60)) * 60).toFixed(
+                      0
+                    )}`}
+              </span>
             </p>
           </button>
           <div className="timeOptions z-40 flex gap-2 relative">
             <div
-             className={`follower z-20 bg-[#ffa200] rounded-lg h-full w-[50px] absolute top-0 left-0`}></div>
+              className={`follower z-20 bg-[#ffa200] rounded-lg h-full absolute top-0 left-0`}
+            ></div>
             <h4 className="font-semibold z-40 text-xl md:text-lg">
               Set{" "}
               <i className="ri-timer-flash-fill text-[#ffa200] font-normal"></i>
@@ -425,22 +470,30 @@ const Home = ({ sendData }) => {
             <ul className="flex items-center z-40 font-semibold">
               {["30 sec", "60 sec", "120 sec"].map((element, index) => (
                 <li
-                  className={`cursor-default px-3 py-1`}
-                  ref={(el)=> timeOptionsDetail.current.length<3 && timeOptionsDetail.current.push(el)}
+                  className={`cursor-default`}
+                  ref={(el) =>
+                    timeOptionsDetail.current.length < 3 &&
+                    timeOptionsDetail.current.push(el)
+                  }
                   onClick={(e) => {
                     e.stopPropagation();
                     setCount(e.target.textContent.split(" ")[0]);
                     console.log(e.target.textContent.split(" ")[0]);
                     setTimeIndex(index);
                     // moveFollwer(e.target.offsetLeft, e.target.offsetWidth);
-                    sendDataLocalStorage(e, index),
-                    reset();
+                    sendDataLocalStorage(e, index), reset();
                     inputDetail.current.focus();
-                    console.log(timeOptionsDetail)
+                    console.log(timeOptionsDetail);
                   }}
                   key={index}
                 >
-                  <span className={`${timeIndex === index ? 'text-[black]': 'text-[#0a335cac]'}`}>{element}</span>
+                  <span
+                    className={`${
+                      timeIndex === index ? "text-[black]" : "text-[#0a335cac]"
+                    } px-2 py-1`}
+                  >
+                    {element}
+                  </span>
                 </li>
               ))}
             </ul>
