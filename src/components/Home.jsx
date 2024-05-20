@@ -236,7 +236,7 @@ const Home = ({ sendData }) => {
       JSON.stringify(e.target.textContent.split(" ")[0])
     );
 
-    localStorage.setItem("tyzerTimeIndexValue", JSON.stringify(index));
+    localStorage.setItem("tyzerTimeIndexValue", JSON.stringify([e.target.offsetLeft, e.target.offsetWidth]));
   }
 
   useEffect(() => {
@@ -251,16 +251,17 @@ const Home = ({ sendData }) => {
     count === null &&
     (timeValue === null ? setTimeIndex(1) : setTimeIndex(timeIndexValue));
     
-    timeOptionsDetail.current.length>0 &&
+    count===null && timeOptionsDetail.current.length>0 &&
       (timeIndexValue !== null ? moveFollwer(
-        timeOptionsDetail.current[timeIndexValue].offsetLeft,
-        timeOptionsDetail.current[timeIndexValue].offsetWidth
+        timeIndexValue[0],
+        timeIndexValue[1]
       ): moveFollwer(
-        timeOptionsDetail.current[timeIndex].offsetLeft,
-        timeOptionsDetail.current[timeIndex].offsetWidth
+        timeOptionsDetail.current[timeIndex].offsetLeft+10,
+        timeOptionsDetail.current[timeIndex].offsetWidth+8
       )
     )
 
+    
     const timeoutId = setTimeout(() => {
       if (inputValue !== "") {
         setBlinkCursor(true);
@@ -270,7 +271,7 @@ const Home = ({ sendData }) => {
         })
       }
     }, 650);
-
+    
     count === 0 && getTypingData();
     count === 0
       ? gsap.to(".timer", {
@@ -373,7 +374,9 @@ const Home = ({ sendData }) => {
               top: `${
                 textDetail.current.length > 0 && textDetail.current[0].offsetTop
               }px`,
+              width: '0.1rem'
             }}
+
             className={`${
               isFocus ? "opacity-100" : "opacity-0"
             } absolute z-[50] cursor ${blinkCursor ? "blink" : ""} h-[40px]  z-30 bg-black`}
@@ -479,12 +482,13 @@ const Home = ({ sendData }) => {
                     timeOptionsDetail.current.push(el)
                   }
                   onClick={(e) => {
-                    e.stopPropagation();
                     setCount(e.target.textContent.split(" ")[0]);
                     setTimeIndex(index);
-                    sendDataLocalStorage(e, index);
+                    sendDataLocalStorage(e);
                     reset();
+                    moveFollwer(e.target.offsetLeft, e.target.offsetWidth);
                     inputDetail.current.focus();
+                    setShowStartBtn(false);
                   }}
                   key={index}
                 >
