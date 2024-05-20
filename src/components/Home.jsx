@@ -294,7 +294,7 @@ const Home = ({ sendData }) => {
     count,
     timeIndex,
     textDetail.current,
-    timeOptionsDetail,
+    timeOptionsDetail.current,
     inputValue,
     isTyping,
     random,
