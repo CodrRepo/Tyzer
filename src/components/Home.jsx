@@ -43,7 +43,7 @@ const Home = ({ sendData }) => {
 
   const [random, setRandom] = useState(null);
   const [validIndex, setValidIndex] = useState(0);
-  const [showStartBtn, setShowStartBtn] = useState(true);
+  const [showStartBtn, setShowStartBtn] = useState(false);
   const [count, setCount] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
   const textBoxDetail = useRef(null);
@@ -246,20 +246,20 @@ const Home = ({ sendData }) => {
     let timeIndexValue = JSON.parse(
       localStorage.getItem("tyzerTimeIndexValue")
     );
-    
+
     count === null && (timeValue === null ? setCount(60) : setCount(timeValue));
     count === null &&
     (timeValue === null ? setTimeIndex(1) : setTimeIndex(timeIndexValue));
     
     timeOptionsDetail.current.length>0 &&
-      moveFollwer(
-        timeOptionsDetail.current[
-          timeIndexValue !== null ? timeIndexValue : timeIndex
-        ].offsetLeft,
-        timeOptionsDetail.current[
-          timeIndexValue !== null ? timeIndexValue : timeIndex
-        ].offsetWidth
-      );
+      (timeIndexValue !== null ? moveFollwer(
+        timeOptionsDetail.current[timeIndexValue].offsetLeft,
+        timeOptionsDetail.current[timeIndexValue].offsetWidth
+      ): moveFollwer(
+        timeOptionsDetail.current[timeIndex].offsetLeft,
+        timeOptionsDetail.current[timeIndex].offsetWidth
+      )
+    )
 
     const timeoutId = setTimeout(() => {
       if (inputValue !== "") {
