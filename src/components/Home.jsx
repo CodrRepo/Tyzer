@@ -43,7 +43,7 @@ const Home = ({ sendData }) => {
 
   const [random, setRandom] = useState(null);
   const [validIndex, setValidIndex] = useState(0);
-  const [invalidCharPos, setInvalidCharPos] = useState(null);
+  const [showStartBtn, setShowStartBtn] = useState(true);
   const [count, setCount] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
   const textBoxDetail = useRef(null);
@@ -155,7 +155,6 @@ const Home = ({ sendData }) => {
         getTypingData();
       }
     } else {
-      setInvalidCharPos(() => validIndex);
       gsap.to(textDetail.current[validIndex], {
         backgroundColor: "#ff3c38",
         duration: 0.01,
@@ -208,7 +207,7 @@ const Home = ({ sendData }) => {
     gsap.to(".follower", {
       x: `${leftValue}px`,
       duration: 0.5,
-      width: itemWidth,
+      width: `${itemWidth}px`,
       ease: CustomEase.create("sliding", "0.16, 1, 0.3, 1"),
     });
   }
@@ -216,7 +215,6 @@ const Home = ({ sendData }) => {
   const reset = () => {
     setRandom(Math.floor(Math.random() * text.length));
     setValidIndex(0);
-    setInvalidCharPos(null);
     setCount(JSON.parse(localStorage.getItem("tyzerTimeValue")));
     setIsFocus(false);
     setIsTyping(false);
@@ -225,6 +223,7 @@ const Home = ({ sendData }) => {
     setTypingAccuracy(0);
     setShowInfo(false);
     stopInterval();
+    setShowStartBtn(false);
     textBoxDetail.current.scrollTo(0, 0);
     inputDetail.current.value = "";
     inputDetail.current.focus();
@@ -273,18 +272,21 @@ const Home = ({ sendData }) => {
 
     count === 0 && getTypingData();
     count === 0
-      ? gsap.to(".ri-history-line", {
+      ? gsap.to(".timer", {
           color: "#00B42A",
           fontWeight: "600",
           duration: 0.3,
         })
-      : gsap.to(".ri-history-line", {
+      : gsap.to(".timer", {
           color: "#ff3c38",
           fontWeight: "600",
           duration: 0.3,
         });
 
+        document.addEventListener('click', ()=>{setShowStartBtn(true)});
+
     return () => {
+      document.removeEventListener('click', ()=>{setShowStartBtn(true)});
       clearTimeout(timeoutId);
     };
   }, [
@@ -348,12 +350,12 @@ const Home = ({ sendData }) => {
           >
             <button
               onClick={handleInputFocus}
-              className="flex items-center justify-center gap-2 border-[1px] rounded-lg px-3 py-2 border-[#1d6d64]"
+              className={`flex items-center bg-[#ffa200] ${showStartBtn? 'block': 'hidden'} justify-center gap-2 rounded-lg px-3 py-2 `}
             >
-              <span className="bg-[#2a9d8f] rounded-full h-[6vw] w-[6vw] p-5 md:p-4 md:h-[0.5vw] md:w-[0.5vw] flex justify-center items-center">
-                <i className="ri-history-line text-white text-2xl md:text-xl"></i>
+              <span className="">
+                <i className="ri-history-line font-bold  text-2xl md:text-xl"></i>
               </span>
-              <p className="text-[#0a335cac] font-semibold text-xl md:text-lg">
+              <p className="text-[#000000] font-semibold text-xl md:text-lg">
                 Start
               </p>
             </button>
@@ -438,7 +440,7 @@ const Home = ({ sendData }) => {
             className="flex items-center justify-center rounded-lg"
           >
             <span className="">
-              <i className="ri-history-line text-[#e63946] font-semibold text-2xl md:text-2xl"></i>
+              <i className="ri-history-line timer font-semibold text-2xl md:text-2xl"></i>
             </span>
             <p className="text-[#0a335cac] text-left font-semibold text-xl md:text-lg">
               <span className="inline-block w-[1.3rem] text-right">
@@ -478,12 +480,10 @@ const Home = ({ sendData }) => {
                   onClick={(e) => {
                     e.stopPropagation();
                     setCount(e.target.textContent.split(" ")[0]);
-                    console.log(e.target.textContent.split(" ")[0]);
                     setTimeIndex(index);
-                    // moveFollwer(e.target.offsetLeft, e.target.offsetWidth);
-                    sendDataLocalStorage(e, index), reset();
+                    sendDataLocalStorage(e, index);
+                    reset();
                     inputDetail.current.focus();
-                    console.log(timeOptionsDetail);
                   }}
                   key={index}
                 >
