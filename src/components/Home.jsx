@@ -246,11 +246,12 @@ const Home = ({ sendData }) => {
     let timeIndexValue = JSON.parse(
       localStorage.getItem("tyzerTimeIndexValue")
     );
+    
     count === null && (timeValue === null ? setCount(60) : setCount(timeValue));
     count === null &&
-      (timeValue === null ? setTimeIndex(1) : setTimeIndex(timeIndexValue));
-
-    timeOptionsDetail.current.length > 0 &&
+    (timeValue === null ? setTimeIndex(1) : setTimeIndex(timeIndexValue));
+    
+    timeOptionsDetail.current.length>0 &&
       moveFollwer(
         timeOptionsDetail.current[
           timeIndexValue !== null ? timeIndexValue : timeIndex
@@ -327,8 +328,8 @@ const Home = ({ sendData }) => {
                 { typingSpeed: typingAccuracy, typingCategory: "Accuracy", icon: "focus-2", color: "text-[#00B42A]" },
               ].map((element, index) => {
                 return (
-                  <div className=" flex items-center">
-                    <i class={`ri-${element.icon}-fill text-[19vh] ${element.color}`}></i>
+                  <div key={index} className=" flex items-center">
+                    <i className={`ri-${element.icon}-fill text-[19vh] ${element.color}`}></i>
                     <h2 className="text-center leading-none flex flex-col">
                       <span className="text-[#000] font-medium text-[7vw] md:text-[5vw] lg:text-[3.6rem]">
                         {element.typingSpeed}
