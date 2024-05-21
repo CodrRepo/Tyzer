@@ -56,6 +56,7 @@ const Home = ({ sendData }) => {
   const [typingAccuracy, setTypingAccuracy] = useState(0);
   const [showInfo, setShowInfo] = useState(false);
   const [timeIndex, setTimeIndex] = useState(1);
+  const [showDefault, setShowDefault] = useState(false);
 
   function getTypingData() {
     inputDetail.current.blur();
@@ -236,32 +237,28 @@ const Home = ({ sendData }) => {
       JSON.stringify(e.target.textContent.split(" ")[0])
     );
 
-    localStorage.setItem("tyzerTimeIndexValue", JSON.stringify([e.target.offsetLeft, e.target.offsetWidth]));
+    localStorage.setItem("tyzerTimeIndexValue", JSON.stringify(index));
+    localStorage.setItem("tyzerTimeDimension", JSON.stringify([e.target.offsetLeft, e.target.offsetWidth]));
   }
 
   useEffect(() => {
     random === null && setRandom(Math.floor(Math.random() * text.length));
     textDetail.current.length > 0 && setCursorPosition();
     let timeValue = JSON.parse(localStorage.getItem("tyzerTimeValue"));
-    let timeIndexValue = JSON.parse(
-      localStorage.getItem("tyzerTimeIndexValue")
-    );
+    let timeDimension = JSON.parse(localStorage.getItem("tyzerTimeDimension"));
+    let timeIndexValue = JSON.parse(localStorage.getItem("tyzerTimeIndexValue"));
 
     count === null && (timeValue === null ? setCount(60) : setCount(timeValue));
     count === null &&
-    (timeValue === null ? setTimeIndex(1) : setTimeIndex(timeIndexValue));
+    (timeIndexValue === null ? setTimeIndex(1) : setTimeIndex(timeIndexValue));
     
-    count===null && timeOptionsDetail.current.length>0 &&
-      (timeIndexValue !== null ? moveFollwer(
-        timeIndexValue[0],
-        timeIndexValue[1]
-      ): moveFollwer(
-        timeOptionsDetail.current[timeIndex].offsetLeft+10,
-        timeOptionsDetail.current[timeIndex].offsetWidth+8
-      )
-    )
+    timeOptionsDetail.current.length>0 &&
+      (timeDimension !== null ? moveFollwer(
+        timeDimension[0],
+        timeDimension[1]): 
+        
+        setShowDefault(true));
 
-    
     const timeoutId = setTimeout(() => {
       if (inputValue !== "") {
         setBlinkCursor(true);
@@ -305,7 +302,7 @@ const Home = ({ sendData }) => {
     <div className="">
       <div className="w-full flex items-center justify-center flex-col gap-3">
         <h1 className="font-bold text-5xl text-[#0a335c]">Tyzer</h1>
-        <h3 className="text-xl text-[#0a335cac]">
+        <h3 className="text-xl text-[#0a335cac] text-center">
           Give yourself{" "}
           <span className="text-[#0a335ce4] font-medium underline underline-offset-4">
             1 min
@@ -323,19 +320,19 @@ const Home = ({ sendData }) => {
               showInfo ? "flex" : "hidden"
             } flex-col md:flex-row absolute z-[3000] justify-center items-center gap-[2vh] md:gap-[7vw] infographics top-0 left-0 bg-white w-full`}
           >
-            <div className="flex justify-between w-[50%]">
+            <div className="flex flex-col md:flex-row  items-center  md:justify-between w-full md:w-[50%]">
               {[
                 { typingSpeed: typingSpeed, typingCategory: "WPM", icon: "flashlight", color: "text-[#ffa200]" },
                 { typingSpeed: typingAccuracy, typingCategory: "Accuracy", icon: "focus-2", color: "text-[#00B42A]" },
               ].map((element, index) => {
                 return (
                   <div key={index} className=" flex items-center">
-                    <i className={`ri-${element.icon}-fill text-[19vh] ${element.color}`}></i>
+                    <i className={`ri-${element.icon}-fill text-[15vh] md:text-[19vh] ${element.color}`}></i>
                     <h2 className="text-center leading-none flex flex-col">
-                      <span className="text-[#000] font-medium text-[7vw] md:text-[5vw] lg:text-[3.6rem]">
+                      <span className="text-[#000] font-medium text-[15vw] md:text-[5vw] lg:text-[3.6rem]">
                         {element.typingSpeed}
                       </span>{" "}
-                      <span className="font-bold text-[#cfcfcf] text-[2.5vw] md:text-[1.5vw] lg:text-[1.3rem]">
+                      <span className="font-bold text-[#cfcfcf] text-[5vw] md:text-[1.5vw] lg:text-[1.3rem]">
                         {element.typingCategory}
                       </span>
                     </h2>
@@ -436,15 +433,15 @@ const Home = ({ sendData }) => {
           />
         </div>
 
-        <div className="flex items-center gap-9 mt-5">
+        <div className="flex flex-col md:flex-row items-center gap-5 md:gap-9 mt-5">
           <button
             onClick={() => {
               reset();
             }}
-            className="flex items-center justify-center rounded-lg"
+            className="flex  items-center justify-center rounded-lg"
           >
             <span className="">
-              <i className="ri-history-line timer font-semibold text-2xl md:text-2xl"></i>
+              <i className="ri-history-line text-[#ff3c38] timer font-semibold text-2xl md:text-2xl"></i>
             </span>
             <p className="text-[#0a335cac] text-left font-semibold text-xl md:text-lg">
               <span className="inline-block w-[1.3rem] text-right">
@@ -464,41 +461,45 @@ const Home = ({ sendData }) => {
               </span>
             </p>
           </button>
-          <div className="timeOptions z-40 flex gap-2 relative">
+          <div className="timeOptions  z-40 flex items-center  justify-center gap-2 relative">
             <div
-              className={`follower z-20 bg-[#ffa200] rounded-lg h-full absolute top-0 left-0`}
+              className={`follower z-20 bg-[#ffa200] rounded-lg h-full absolute top-0 left-[0%]`}
             ></div>
             <h4 className="font-semibold z-40 text-xl md:text-lg">
               Set{" "}
               <i className="ri-timer-flash-fill text-[#ffa200] font-normal"></i>
               :
             </h4>
-            <ul className="flex items-center z-40 font-semibold">
+            <ul className="flex items-center z-40 gap-1 font-semibold">
               {["30 sec", "60 sec", "120 sec"].map((element, index) => (
                 <li
-                  className={`cursor-default`}
+                  className={`cursor-default py-3 md:py-1`}
                   ref={(el) =>
-                    timeOptionsDetail.current.length < 3 &&
-                    timeOptionsDetail.current.push(el)
+                    {timeOptionsDetail.current.length < 3 &&
+                    timeOptionsDetail.current.push(el)}
                   }
                   onClick={(e) => {
+                    e.stopPropagation();
                     setCount(e.target.textContent.split(" ")[0]);
                     setTimeIndex(index);
-                    sendDataLocalStorage(e);
+                    sendDataLocalStorage(e, index);
                     reset();
                     moveFollwer(e.target.offsetLeft, e.target.offsetWidth);
                     inputDetail.current.focus();
                     setShowStartBtn(false);
+                    setShowDefault(false);
                   }}
                   key={index}
                 >
+                  <div className="w-[100%]">
                   <span
                     className={`${
-                      timeIndex === index ? "text-[black]" : "text-[#0a335cac]"
-                    } px-2 py-1`}
+                      timeIndex === index ? "text-[black]" : "text-[#0a335cac] pointer-events-none"
+                    } px-2 py-1 ${(showDefault && index==1)? 'bg-[#ffa200] rounded-lg h-full py-3 md:py-1 w-full': ''}`}
                   >
                     {element}
                   </span>
+                  </div>
                 </li>
               ))}
             </ul>
