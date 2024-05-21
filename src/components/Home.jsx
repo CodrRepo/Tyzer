@@ -10,31 +10,31 @@ const Home = ({ sendData }) => {
   const [text, setText] = useState([
     {
       content:
-        "The quick brown Fox jumps over the lazy Dog near the riverbank. As sunlight filters through the trees, the serene landscape becomes a picturesque scene. Birds chirp melodiously, adding to the tranquility of the morning. Meanwhile, in a nearby Cottage, the aroma of freshly brewed Coffee fills the air. A writer sits by the window, penning stories inspired by the beauty of Nature. Outside, a gentle Breeze rustles the leaves, creating a soothing symphony. Every detail of this peaceful moment reminds us to appreciate the simple pleasures in life. Enjoy & cherish each day, 365 days a year, 24/7! Remember: Love, Laugh, & Live!",
+        "Honey is a natural marvel that never spoils. Archaeologists have found honey in ancient Egyptian tombs over 3,000 years old, and it's still perfectly edible. This durability comes from honey\'s low moisture content and acidic pH, which prevent bacteria and microorganisms from thriving. Bananas, surprisingly, are classified as berries, while strawberries are not. Botanically, a berry is a fruit that develops from the ovary of a single flower and contains seeds embedded in its flesh. Another fascinating fact is that the Eiffel Tower can grow by about 15 cm during the summer due to thermal expansion. The iron structure expands when heated, making the tower taller in hot weather. Octopuses are incredible creatures with three hearts: two pump blood to the gills, and one pumps it to the rest of the body. Their blood is blue because it contains hemocyanin, a copper-based molecule that helps transport oxygen. Cats, commonly known for causing allergies in humans, can also suffer from allergies to humans. Some cats are allergic to human dander, pollen, or perfumes. These diverse and intriguing facts highlight the wonders of the natural and man-made world, showcasing how much there is to learn about even the most familiar things.",
     },
     {
       content:
-        'A sleek black Cat prowls silently along the fence, its eyes glinting in the moonlight. The sound of distant Thunder rumbles through the night, promising rain. Thunderstorms are most common in tropical regions. Inside a cozy Library, the clock strikes midnight, and a Reader turns the pages of an ancient book. The oldest known book is the "Epic of Gilgamesh," dating back to 2100 BC. The scent of old paper mingles with the fragrance of blooming Jasmine outside. Embrace the mysteries of life, where every second counts. Explore, Dream, & Discover! Life is full of adventures waiting to unfold, 24 hours a day.',
+        'The shortest war in history, the Anglo-Zanzibar War, lasted only 38 minutes. Fought on August 27, 1896, between the United Kingdom and the Sultanate of Zanzibar, it ended quickly with Zanzibar\'s surrender. This brief conflict contrasts sharply with the long-lasting geological activity of the Moon. The Moon experiences moonquakes, seismic events caused by tidal stresses from the Earth\'s gravitational pull. These quakes are less intense than earthquakes and occur less frequently, but they reveal that our seemingly inert Moon is still geologically active. Venus, our neighboring planet, has a day that is longer than its year. Venus takes about 243 Earth days to complete one rotation on its axis but only about 225 Earth days to orbit the Sun. This slow rotation means that a single day on Venus lasts longer than a Venusian year. Despite common myths, the Great Wall of China is not visible from space without aid. Astronauts have confirmed that the wall cannot be seen with the naked eye from low Earth orbit. On Earth, giraffes and humans share an interesting anatomical similarity: both have seven neck vertebrae. However, giraffe neck vertebrae are much longer, allowing for their towering necks. These mixed facts illustrate the vast range of surprising truths found both on our planet and in our solar system.',
     },
     {
       content:
-        'In a quiet Mountain cabin, a family gathers around a roaring Fireplace. Snow falls gently outside, blanketing the world in white. Snowflakes are unique, with no two being exactly alike. The scent of pine mingles with the aroma of hot Chocolate, which was first introduced to Europe by the Spanish in the 16th century. Children play board games while the adults share stories and laughter. The first board game, "Senet," originated in ancient Egypt. The warmth of the fire and the joy of togetherness make this moment special. Love & be loved, always. Enjoy every precious second, winter or summer, rain or shine.',
+        'The world of nature is full of surprises, such as the fact that a group of flamingos is called a "flamboyance." These striking birds get their pink color from their diet, which is rich in carotenoids found in algae and crustaceans. Another intriguing fact is that lobsters have an unusual way of aging—they essentially don\'t. Lobsters produce an enzyme called telomerase, which repairs DNA sequences known as telomeres, thus preventing the aging process in a way that scientists are still striving to fully understand. Speaking of the sea, the blue whale is the largest animal on Earth, with a heart the size of a small car and a tongue that weighs as much as an elephant. Remarkably, despite their massive size, blue whales feed almost exclusively on tiny shrimp-like animals called krill. In the insect world, bees communicate with each other through dance. They perform a series of movements known as the "waggle dance" to inform other bees about the location and distance of food sources. These diverse and captivating facts demonstrate the incredible variety of life on our planet and the unique adaptations that different species have developed to thrive in their environments.',
     },
     {
       content:
-        "The International Space Station (ISS) orbits Earth approximately 16 times a day, providing a unique vantage point of our planet. Astronauts aboard the ISS conduct various scientific experiments in microgravity. The ISS travels at a speed of about 28,000 kilometers per hour (17,500 miles per hour). Communication with Earth is maintained through a network of satellites. Life in space requires careful management of resources like water and air. Enjoy & cherish each achievement in space exploration, as they pave the way for future discoveries. The sky is not the limit; it's just the beginning. Remember: Innovate, Inspire, & Explore!",
+        "In the realm of human anatomy, did you know that your stomach gets a new lining every few days? The harsh acidic environment in the stomach, which is essential for digesting food, also means that the stomach lining is continuously being eroded and thus needs to regenerate frequently. Moving on to technology, the first computer virus was created in 1983 and was called the \"Elk Cloner.\" It spread via floppy disks and displayed a short poem on infected Apple II computers. Another remarkable technological feat is the Voyager 1 spacecraft, which has been traveling through space since its launch in 1977. It is now over 14 billion miles from Earth, making it the most distant human-made object in space. Voyager 1 carries the Golden Record, a time capsule with sounds and images intended to portray the diversity of life and culture on Earth. Back on Earth, the world\'s oldest known living tree is a bristlecone pine in California\'s White Mountains, estimated to be over 5,000 years old. Named Methuselah, this tree has survived millennia of changing climates and environments. These facts highlight the astonishing advancements in technology and the resilience of nature.",
     },
     {
       content:
-        "The Great Wall of China, stretching over 13,000 miles, is one of the most iconic structures built by human hands. Construction of the wall began as early as the 7th century BC, primarily to protect against invasions. It consists of walls, watchtowers, and fortresses made from a variety of materials, including stone, brick, and tamped earth. The Great Wall is a UNESCO World Heritage site and attracts millions of visitors each year. It stands as a testament to human ingenuity and perseverance. Visit & respect historical monuments, as they tell the stories of our past. Protect & preserve for future generations.",
+        "The animal kingdom never ceases to amaze, particularly with creatures like the immortal jellyfish (Turritopsis dohrnii). This jellyfish can revert to its juvenile form after reaching maturity, effectively bypassing death and theoretically living forever under the right conditions. Another fascinating fact is that sloths are so slow-moving that algae can grow on their fur. This symbiotic relationship provides camouflage, which helps sloths blend into their environment and avoid predators. Birds, too, have their quirks—penguins, for instance, propose to their mates with a pebble. Male penguins search for the smoothest pebble to present to their potential mate, and if the female accepts, she places it in her nest. Additionally, elephants are the only animals that can\'t jump. Despite their strength and size, their limb structure doesn\'t allow them to perform this action. On a smaller scale, the fingerprints of koalas are so similar to human fingerprints that they can sometimes be confused at crime scenes. Each of these unique traits and behaviors highlights the incredible adaptability and diversity of life on Earth.",
     },
     {
       content:
-        "The Amazon Rainforest, often referred to as the \"lungs of the Earth,\" produces around 20% of the world's oxygen. Spanning over 5.5 million square kilometers (2.1 million square miles), it is the largest tropical rainforest on the planet. The Amazon is home to an estimated 390 billion individual trees, comprising around 16,000 different species. It plays a crucial role in regulating the Earth's climate. However, deforestation poses a significant threat to this vital ecosystem. Appreciate & protect the natural wonders of our world, as they are irreplaceable. Conserve, educate, & act to ensure a sustainable future for all.",
+        "The natural world is full of chemical marvels, like the fact that a single bolt of lightning contains enough energy to toast 100,000 slices of bread. Lightning heats the air it passes through to about 30,000 Kelvin, which is five times hotter than the surface of the Sun. Another fascinating aspect of nature is bioluminescence. Fireflies are famous for this phenomenon, using it to attract mates and deter predators. Certain types of fungi, fish, and even squid also produce light through chemical reactions. Moving to the culinary world, chocolate has a rich history and unique properties. Eating chocolate releases endorphins in the brain, which makes us feel happy, and it contains a small amount of caffeine, providing a mild energy boost. Another food-related fact is that apples float in water because they are 25% air. This makes bobbing for apples possible at Halloween parties. Additionally, the Guinness World Record for the longest hiccuping spree is held by Charles Osborne, who hiccuped continuously for 68 years, starting in 1922. These diverse facts showcase the extraordinary and sometimes surprising aspects of the physical and natural worlds.",
     },
     {
       content:
-        "The Mariana Trench, located in the western Pacific Ocean, is the deepest part of the world's oceans. The trench's maximum known depth is approximately 36,070 feet (10,994 meters) at the Challenger Deep. This remote underwater canyon is home to unique and often bizarre life forms that have adapted to extreme pressures and darkness. In 1960, the bathyscaphe Trieste reached the bottom of the trench, piloted by Jacques Piccard and Don Walsh. The exploration of such depths helps us understand more about our planet's geology and marine biology. Dive into the unknown & seek knowledge, for the ocean holds many secrets.",
+        "Exploring human history and culture reveals fascinating facts, such as the origin of the marathon. This long-distance race commemorates the run of the Greek soldier Pheidippides, who, according to legend, ran approximately 26 miles from the battlefield of Marathon to Athens to announce the Greek victory over Persia in 490 BC. Speaking of remarkable journeys, consider the story of the Great Emu War in Australia. In 1932, the Australian military was called in to control a population of emus that was wreaking havoc on crops. Despite their efforts, the emus proved difficult to manage, and the \"war\" ended with the emus largely victorious. Another quirky historical fact is that Cleopatra, the last active ruler of the Ptolemaic Kingdom of Egypt, lived closer in time to the moon landing than to the construction of the Great Pyramid of Giza. This perspective highlights the vast spans of history. On a lighter note, the first ever webcam was used to monitor a coffee pot at the University of Cambridge, allowing researchers to check if the coffee was ready without leaving their desks. These historical and cultural anecdotes illustrate the rich tapestry of human experience and ingenuity across the ages.",
     },
   ]);
 
@@ -149,12 +149,13 @@ const Home = ({ sendData }) => {
 
       setCursorPosition();
 
-      if (validIndex === textDetail.current.length - 1) {
+      if (validIndex === text[random].content.length - 1) {
         stopInterval();
         setIsFocus(false);
         setValidIndex(0);
         getTypingData();
       }
+
     } else {
       gsap.to(textDetail.current[validIndex], {
         backgroundColor: "#ff3c38",
@@ -283,9 +284,11 @@ const Home = ({ sendData }) => {
         });
 
         document.addEventListener('click', ()=>{setShowStartBtn(true)});
+        document.addEventListener('contextmenu', ()=>{setShowStartBtn(true)});
 
     return () => {
       document.removeEventListener('click', ()=>{setShowStartBtn(true)});
+      document.removeEventListener('contextmenu', ()=>{setShowStartBtn(true)});
       clearTimeout(timeoutId);
     };
   }, [
@@ -320,7 +323,7 @@ const Home = ({ sendData }) => {
               showInfo ? "flex" : "hidden"
             } flex-col md:flex-row absolute z-[3000] justify-center items-center gap-[2vh] md:gap-[7vw] infographics top-0 left-0 bg-white w-full`}
           >
-            <div className="flex flex-col md:flex-row  items-center  md:justify-between w-full md:w-[50%]">
+            <div className="flex flex-col md:flex-row  items-center md:gap-20 justify-center w-full">
               {[
                 { typingSpeed: typingSpeed, typingCategory: "WPM", icon: "flashlight", color: "text-[#ffa200]" },
                 { typingSpeed: typingAccuracy, typingCategory: "Accuracy", icon: "focus-2", color: "text-[#00B42A]" },
